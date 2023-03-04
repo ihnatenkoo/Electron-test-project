@@ -3,6 +3,8 @@ window.addEventListener('DOMContentLoaded', () => {
 	const infoBlock = document.querySelector('.info');
 	const titleInput = document.querySelector('#window-title');
 	const changeTitleBtn = document.querySelector('.changeBtn');
+	const openFileBtn = document.querySelector('.openBtn');
+	const filePath = document.querySelector('.filePath');
 
 	infoBlock.innerHTML = `
 	<h2>This versions:<h2> 
@@ -19,5 +21,10 @@ window.addEventListener('DOMContentLoaded', () => {
 
 	changeTitleBtn.addEventListener('click', () => {
 		apiElectron.setTitle(titleInput.value);
+	});
+
+	openFileBtn.addEventListener('click', async () => {
+		const path = await apiElectron.openFile();
+		filePath.textContent = path;
 	});
 });

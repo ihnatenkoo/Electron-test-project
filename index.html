@@ -7,11 +7,18 @@
 	</head>
 	<body>
 		<h1>Hello Electron</h1>
+
 		<div class="info"></div>
-		<div>
+
+		<div style="margin-bottom: 30px">
 			<label for="window-title">Window Title:</label>
 			<input type="text" id="window-title" />
 			<button class="changeBtn">Change window title</button>
+		</div>
+
+		<div>
+			<button class="openBtn">Open a File</button>
+			File path: <strong class="filePath"></strong>
 		</div>
 	</body>
 	<script src="./renderer.js"></script>
