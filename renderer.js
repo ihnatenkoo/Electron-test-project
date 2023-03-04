@@ -5,6 +5,7 @@ window.addEventListener('DOMContentLoaded', () => {
 	const changeTitleBtn = document.querySelector('.changeBtn');
 	const openFileBtn = document.querySelector('.openBtn');
 	const filePath = document.querySelector('.filePath');
+	const counter = document.querySelector('.counter');
 
 	infoBlock.innerHTML = `
 	<h2>This versions:<h2> 
@@ -26,5 +27,11 @@ window.addEventListener('DOMContentLoaded', () => {
 	openFileBtn.addEventListener('click', async () => {
 		const path = await apiElectron.openFile();
 		filePath.textContent = path;
+	});
+
+	apiElectron.onUpdateCounter((_event, value) => {
+		const oldValue = +counter.innerText;
+		const newValue = oldValue + value;
+		counter.textContent = newValue;
 	});
 });

@@ -10,4 +10,5 @@ contextBridge.exposeInMainWorld('versions', {
 contextBridge.exposeInMainWorld('apiElectron', {
 	setTitle: (title) => ipcRenderer.send('set-title', title),
 	openFile: () => ipcRenderer.invoke('dialog:openFile'),
+	onUpdateCounter: (callback) => ipcRenderer.on('update-counter', callback),
 });

@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, dialog } = require('electron');
+const { app, BrowserWindow, ipcMain, Menu, dialog } = require('electron');
 const path = require('path');
 
 const createWindow = () => {
@@ -9,6 +9,23 @@ const createWindow = () => {
 			preload: path.join(__dirname, 'preload.js'),
 		},
 	});
+
+	const menu = Menu.buildFromTemplate([
+		{
+			label: app.name,
+			submenu: [
+				{
+					label: 'Increment',
+					click: () => win.webContents.send('update-counter', 1),
+				},
+				{
+					label: 'Decrement',
+					click: () => win.webContents.send('update-counter', -1),
+				},
+			],
+		},
+	]);
+	Menu.setApplicationMenu(menu);
 
 	ipcMain.handle('ping', () => 'pong');
 	win.loadFile('index.html');
