@@ -1,6 +1,8 @@
 window.addEventListener('DOMContentLoaded', () => {
 	const titleBlock = document.querySelector('h1');
 	const infoBlock = document.querySelector('.info');
+	const titleInput = document.querySelector('#window-title');
+	const changeTitleBtn = document.querySelector('.changeBtn');
 
 	infoBlock.innerHTML = `
 	<h2>This versions:<h2> 
@@ -14,4 +16,8 @@ window.addEventListener('DOMContentLoaded', () => {
 	};
 
 	titleBlock.addEventListener('click', getIpcMessage);
+
+	changeTitleBtn.addEventListener('click', () => {
+		apiElectron.setTitle(titleInput.value);
+	});
 });

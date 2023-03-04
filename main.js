@@ -15,7 +15,15 @@ const createWindow = () => {
 	win.webContents.openDevTools();
 };
 
+const onSetTitle = (event, title) => {
+	const webContents = event.sender;
+	const win = BrowserWindow.fromWebContents(webContents);
+	win.setTitle(title);
+};
+
 app.whenReady().then(() => {
+	ipcMain.on('set-title', onSetTitle);
+
 	createWindow();
 
 	app.on('activate', () => {
