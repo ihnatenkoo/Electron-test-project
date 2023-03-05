@@ -12,3 +12,11 @@ contextBridge.exposeInMainWorld('apiElectron', {
 	openFile: () => ipcRenderer.invoke('dialog:openFile'),
 	onUpdateCounter: (callback) => ipcRenderer.on('update-counter', callback),
 });
+
+contextBridge.exposeInMainWorld('downloadFile', {
+	onChangeDownloadStatus: (callback) =>
+		ipcRenderer.on('downloadStatus', callback),
+	onPause: () => ipcRenderer.send('pause'),
+	onResume: () => ipcRenderer.send('resume'),
+	onCancel: () => ipcRenderer.send('cancel'),
+});

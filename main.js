@@ -1,7 +1,16 @@
-const { app, BrowserWindow, ipcMain, Menu, dialog } = require('electron');
+const {
+	app,
+	BrowserWindow,
+	ipcMain,
+	Menu,
+	dialog,
+	session,
+} = require('electron');
 const path = require('path');
 
 const createWindow = () => {
+	const ses = session.defaultSession;
+
 	const win = new BrowserWindow({
 		width: 1000,
 		height: 600,
@@ -27,7 +36,41 @@ const createWindow = () => {
 	]);
 	Menu.setApplicationMenu(menu);
 
-	ipcMain.handle('ping', () => 'pong');
+	ses.on('will-download', (e, downloadItem, webContents) => {
+		webContents.send('downloadStatus', 'downloading');
+		const fileName = downloadItem.getFilename();
+		const fileSize = downloadItem.getTotalBytes();
+		downloadItem.setSavePath(app.getAppPath() + `${fileName}`);
+
+		downloadItem.on('updated', (e, state) => {
+			let received = downloadItem.getReceivedBytes();
+
+			if (state === 'progressing' && received) {
+				let progress = Math.round((received / fileSize) * 100);
+				webContents.executeJavaScript(
+					`globalThis.progress.value = ${progress}`
+				);
+
+				if (downloadItem.isPaused()) {
+					webContents.send('downloadStatus', 'pause');
+				} else {
+					webContents.send('downloadStatus', 'downloading');
+				}
+			}
+		});
+
+		downloadItem.on('done', (e, state) => {
+			if (state === 'cancelled') {
+				webContents.executeJavaScript(`globalThis.progress.value = 0`);
+				webContents.send('downloadStatus', 'cancel');
+			}
+		});
+
+		ipcMain.on('pause', () => downloadItem.pause());
+		ipcMain.on('resume', () => downloadItem.resume());
+		ipcMain.on('cancel', () => downloadItem.cancel());
+	});
+
 	win.loadFile('index.html');
 	win.webContents.openDevTools();
 };

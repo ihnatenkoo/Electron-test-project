@@ -6,7 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	</head>
 	<body>
-		<h1>Hello Electron</h1>
+		<div style="margin-bottom: 30px">Hello Electron</div>
 
 		<div class="info"></div>
 
@@ -21,7 +21,21 @@
 			File path: <strong class="filePath"></strong>
 		</div>
 
-		<div>Counter: <strong class="counter">0</strong></div>
+		<div style="margin-bottom: 30px">
+			Counter: <strong class="counter">0</strong>
+		</div>
+
+		<div>
+			<a
+				href="https://file-examples.com/storage/fe7e2bfeed6401e75b22832/2017/04/file_example_MP4_480_1_5MG.mp4"
+				download
+				>Download file</a
+			>
+			<progress min="0" max="100" value="0" id="progress"></progress>
+			<button id="download-pause" disabled>Pause</button>
+			<button id="download-resume" disabled>Resume</button>
+			<button id="download-cancel" disabled>Cancel</button>
+		</div>
 	</body>
 	<script src="./renderer.js"></script>
 </html>
