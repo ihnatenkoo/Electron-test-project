@@ -5,6 +5,7 @@ const {
 	Menu,
 	dialog,
 	session,
+	nativeTheme,
 } = require('electron');
 const path = require('path');
 
@@ -21,7 +22,7 @@ const createWindow = () => {
 
 	const menu = Menu.buildFromTemplate([
 		{
-			label: app.name,
+			label: 'Incr/Decr',
 			submenu: [
 				{
 					label: 'Increment',
@@ -33,8 +34,20 @@ const createWindow = () => {
 				},
 			],
 		},
+		{
+			label: 'Theme',
+			submenu: [
+				{ label: 'Dark', click: () => setTheme('dark') },
+				{ label: 'Light', click: () => setTheme('light') },
+				{ label: 'System', click: () => setTheme('system') },
+			],
+		},
 	]);
 	Menu.setApplicationMenu(menu);
+
+	const setTheme = (theme) => {
+		nativeTheme.themeSource = theme;
+	};
 
 	ses.on('will-download', (e, downloadItem, webContents) => {
 		webContents.send('downloadStatus', 'downloading');
