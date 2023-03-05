@@ -9,6 +9,9 @@ window.addEventListener('DOMContentLoaded', () => {
 	const downloadPauseBtn = document.querySelector('#download-pause');
 	const downloadResumeBtn = document.querySelector('#download-resume');
 	const downloadCancelBtn = document.querySelector('#download-cancel');
+	const chatBlock = document.querySelector('#chat-block');
+	const chatBtn = document.querySelector('#chat-btn');
+	const chatInput = document.querySelector('#chat-input');
 
 	//SHOW VERSIONS
 	infoBlock.innerHTML = `
@@ -62,4 +65,15 @@ window.addEventListener('DOMContentLoaded', () => {
 	downloadCancelBtn.addEventListener('click', async () => {
 		globalThis.downloadFile.onCancel();
 	});
+
+	// CHAT
+	chatBtn.addEventListener('click', async () => {
+		chatBlock.innerHTML += `<div style="color:green">${chatInput.value}</div>`;
+		const answer = await getAnswerFromMain(chatInput.value);
+		chatBlock.innerHTML += `<div style="color:red"> ${answer}</div>`;
+	});
+
+	const getAnswerFromMain = async (text) => {
+		return await apiElectron.sendChatMsg(text);
+	};
 });

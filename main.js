@@ -90,9 +90,21 @@ const onFileOpen = async () => {
 	}
 };
 
+const sendChatResponse = (e, text) => {
+	if (text === 'Hello') {
+		return 'Hi from Main';
+	} else if (text === 'Bye') {
+		return 'See you later';
+	} else {
+		return "I'm main, who are you?";
+	}
+};
+
 app.whenReady().then(() => {
 	ipcMain.on('set-title', onSetTitle);
 	ipcMain.handle('dialog:openFile', onFileOpen);
+
+	ipcMain.handle('chat', sendChatResponse);
 
 	createWindow();
 
